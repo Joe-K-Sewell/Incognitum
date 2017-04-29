@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Joe-K-Sewell/Incognitum/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Joe-K-Sewell/Incognitum</PackageProjectUrl>
+    <Version>0.0.1</Version>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Authors>Joe Sewell and other contributors</Authors>
+    <Company />
+    <Description>A .NET Standard library for Mastodon. Because the initialism "Yet Another Mastodon Library" was already taken.</Description>
+    <PackageTags>mastodon social</PackageTags>
+    <RepositoryUrl>git@github.com:Joe-K-Sewell/Incognitum.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+</Project>
