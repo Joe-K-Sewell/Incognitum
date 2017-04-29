@@ -13,5 +13,11 @@
     <PackageReference Include="xunit.runner.console" Version="2.2.0" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-beta1-build3642" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="run_unit_tests.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
