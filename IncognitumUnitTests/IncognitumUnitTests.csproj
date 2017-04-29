@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.5</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Incognitum\Incognitum.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.3.0-beta1-build3642" />
+    <PackageReference Include="xunit.runner.console" Version="2.2.0" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-beta1-build3642" />
+  </ItemGroup>
+
+</Project>
