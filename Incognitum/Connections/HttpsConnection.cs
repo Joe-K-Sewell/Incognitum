@@ -41,5 +41,10 @@ namespace Incognitum.Connections
 
         /// <summary> The URI pointing to the Mastodon instance. </summary>
         public Uri InstanceUri { get { return _client.BaseAddress; } }
+
+        public Response Send(Request request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
