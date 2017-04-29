@@ -8,7 +8,7 @@ namespace Incognitum.Connections
     /// <summary>
     /// Represents a connection via HTTPS to a Mastodon instance.
     /// </summary>
-    public class HttpsConnection : IConnection
+    public sealed class HttpsConnection : IConnection
     {
         private HttpClient _client;
 
@@ -16,7 +16,7 @@ namespace Incognitum.Connections
         /// Creates an <see cref="HttpsConnection"/> to the Mastodon instance
         /// specified by <paramref name="hostName"/>.
         /// </summary>
-        /// <param name="hostName"></param>
+        /// <param name="hostName">host name of the Mastodon instance</param>
         public HttpsConnection(String hostName)
         {
             Validations.ParameterIsNotNullOrWhiteSpace(nameof(hostName), hostName);
@@ -25,12 +25,21 @@ namespace Incognitum.Connections
             const string protocol = "https://";
             if (hostName.StartsWith(protocol, StringComparison.OrdinalIgnoreCase))
             {
-                _client.BaseAddress = new Uri(hostName);
+                hostName = hostName.Substring(protocol.Length);
             }
-            else
+            if (hostName.EndsWith("/"))
             {
-                _client.BaseAddress = new UriBuilder(protocol, hostName).Uri;
+                hostName = hostName.Substring(0, hostName.Length - 1);
             }
+            if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
+            {
+                throw new ArgumentException($"Unrecognized hostname form: {hostName}", nameof(hostName));
+            }
+
+            _client.BaseAddress = new UriBuilder(protocol, hostName).Uri;
         }
+
+        /// <summary> The URI pointing to the Mastodon instance. </summary>
+        public Uri InstanceUri { get { return _client.BaseAddress; } }
     }
 }
