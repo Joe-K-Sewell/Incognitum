@@ -47,11 +47,19 @@ namespace IncognitumUnitTests
         }
 
         [TestMethod]
+        [DataRow("2001:0db8:85a3:0000:0000:8a2e:0370:7334", "[2001:db8:85a3::8a2e:370:7334]")]
         [DataRow("2001:db8:85a3:0:0:8a2e:370:7334", "[2001:db8:85a3::8a2e:370:7334]")]
+        [DataRow("2001:db8:85a3::8a2e:370:7334", "[2001:db8:85a3::8a2e:370:7334]")]
+        [DataRow("0:0:0:0:0:0:0:1", "[::1]")]
+        [DataRow("::1", "[::1]")]
+        [DataRow("::", "[::]")]
         public void ctor_IpV6(String ipAddress, String uriRepresentation)
         {
             var connection = new HttpsConnection(ipAddress);
             Assert.AreEqual($"https://{uriRepresentation}/", connection.InstanceUri.ToString());
+
+            var connectionWithBraces = new HttpsConnection($"[{ipAddress}]");
+            Assert.AreEqual($"https://{uriRepresentation}/", connectionWithBraces.InstanceUri.ToString());
         }
 
         [TestMethod]
