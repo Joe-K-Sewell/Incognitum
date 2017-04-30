@@ -14,9 +14,12 @@ namespace IncognitumUnitTests.TestHelpers
         }
 
         internal Func<Request, Response> SendBehavior;
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         internal override async Task<Response> SendAsync(Request request)
         {
             return SendBehavior(request);
         }
+#pragma warning restore CS1998
     }
 }

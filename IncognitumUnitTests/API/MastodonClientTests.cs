@@ -8,19 +8,19 @@ using Incognitum.Connections;
 using IncognitumUnitTests.TestHelpers;
 using System.Linq;
 
-namespace IncognitumUnitTests
+namespace IncognitumUnitTests.API
 {
     [TestClass]
     public class MastodonClientTests
     {
         [TestMethod]
-        public void ctor_NullConnectionThrowsException()
+        public void ConstructorConnection_NullThrowsException()
         {
             Assert.ThrowsException<ArgumentNullException>(() => new MastodonClient((Connection) null));
         }
 
         [TestMethod]
-        public void ctor_NullInstanceHostNameThrowsException()
+        public void ConstructorString_NullThrowsException()
         {
             Assert.ThrowsException<ArgumentNullException>(() => new MastodonClient((String) null));
         }
@@ -28,7 +28,7 @@ namespace IncognitumUnitTests
         [TestMethod]
         [DataRow("")]
         [DataRow(" ")]
-        public void ctor_WhitespaceInstanceHostNameThrowsException(String instanceHostName)
+        public void ConstructorString_WhitespaceOnlyThrowsException(String instanceHostName)
         {
             Assert.ThrowsException<ArgumentException>(() => new MastodonClient(instanceHostName));
         }
@@ -52,7 +52,7 @@ namespace IncognitumUnitTests
             Assert.AreEqual(new Uri("https://mastodon.social/"), instance.Uri);
             Assert.AreEqual("Mastodon", instance.Title);
             Assert.AreEqual("The flagship Mastodon instance", instance.Description);
-            Assert.AreEqual("eugen@zeonfederated.com", instance.EMail);
+            Assert.AreEqual("eugen@zeonfederated.com", instance.Email);
 
             var extraData = instance.NonSpecData.Single();
             Assert.AreEqual("version", extraData.Key);

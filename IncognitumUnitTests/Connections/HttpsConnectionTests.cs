@@ -10,7 +10,7 @@ namespace IncognitumUnitTests
     public class HttpsConnectionTests
     {
         [TestMethod]
-        public void ctor_NullHostnameThrowsException()
+        public void Constructor_NullThrowsException()
         {
             Assert.ThrowsException<ArgumentNullException>(() => new HttpsConnection(null));
         }
@@ -18,7 +18,7 @@ namespace IncognitumUnitTests
         [TestMethod]
         [DataRow("")]
         [DataRow(" ")]
-        public void ctor_WhitespaceHostnameThrowsException(String hostName)
+        public void Constructor_WhitespaceOnlyThrowsException(String hostName)
         {
             Assert.ThrowsException<ArgumentException>(() => new HttpsConnection(hostName));
         }
@@ -31,7 +31,7 @@ namespace IncognitumUnitTests
         [DataRow("pawoo.net")]
         [DataRow("mastodon.xyz")]
         [DataRow("social.tchncs.de")]
-        public void ctor_DnsName(String hostName)
+        public void Constructor_DnsName(String hostName)
         {
             var connection = new HttpsConnection(hostName);
             Assert.AreEqual($"https://{hostName}/", connection.InstanceUri.ToString());
@@ -40,7 +40,7 @@ namespace IncognitumUnitTests
         [TestMethod]
         [DataRow("127.0.0.1")]
         [DataRow("8.8.8.8")]
-        public void ctor_IpV4(String ipAddress)
+        public void Constructor_IpV4(String ipAddress)
         {
             var connection = new HttpsConnection(ipAddress);
             Assert.AreEqual($"https://{ipAddress}/", connection.InstanceUri.ToString());
@@ -53,7 +53,7 @@ namespace IncognitumUnitTests
         [DataRow("0:0:0:0:0:0:0:1", "[::1]")]
         [DataRow("::1", "[::1]")]
         [DataRow("::", "[::]")]
-        public void ctor_IpV6(String ipAddress, String uriRepresentation)
+        public void Constructor_IpV6(String ipAddress, String uriRepresentation)
         {
             var connection = new HttpsConnection(ipAddress);
             Assert.AreEqual($"https://{uriRepresentation}/", connection.InstanceUri.ToString());
@@ -66,7 +66,7 @@ namespace IncognitumUnitTests
         [DataRow("example.com")]
         [DataRow("mastodon.social")]
         [DataRow("mastodon.cloud")]
-        public void ctor_WithTrailingSlash(String hostName)
+        public void Constructor_WithTrailingSlash(String hostName)
         {
             var connection = new HttpsConnection(hostName + "/");
             Assert.AreEqual($"https://{hostName}/", connection.InstanceUri.ToString());
@@ -78,7 +78,7 @@ namespace IncognitumUnitTests
         [DataRow("mastodon.cloud")]
         [DataRow("127.0.0.1")]
         [DataRow("[2001:db8:85a3:0:0:8a2e:370:7334]")]
-        public void ctor_WithPath(String hostName)
+        public void Constructor_WithPath(String hostName)
         {
             Assert.ThrowsException<ArgumentException>(() => new HttpsConnection(hostName + "/api"));
         }

@@ -55,12 +55,12 @@ namespace Incognitum.API
         /// <returns>information about the connected instance</returns>
         public async Task<MastodonInstance> GetInstanceInformationAsync()
         {
-            return await 
-                ApiCallAsync<MastodonInstance>(new Request
+            return await ApiCallAsync<MastodonInstance>(
+                new Request
                 (
                     Verb.GetPublic,
                     "/api/v1/instance",
-                    default(AuthToken),
+                    null,
                     new Dictionary<string, string>()
                 ));
         }
