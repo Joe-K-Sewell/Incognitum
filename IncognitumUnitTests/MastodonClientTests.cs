@@ -30,5 +30,14 @@ namespace IncognitumUnitTests
         {
             Assert.ThrowsException<ArgumentException>(() => new MastodonClient(instanceHostName));
         }
+
+        [TestMethod]
+        [TestCategory("NotUnitTest")]
+        public void InstanceInformation()
+        {
+            var client = new MastodonClient("mastodon.social");
+            var result = client.InstanceInformation;
+            Console.WriteLine(result);
+        }
     }
 }

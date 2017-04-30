@@ -47,10 +47,13 @@ namespace Incognitum.Connections
         {
             using (var content = new FormUrlEncodedContent(request.Arguments))
             {
-                using (var response = await _client.PostAsync(request.Path, content))
+                using (var httpRequest = new HttpRequestMessage(request.Verb.HttpMethod, request.Path))
                 {
-                    response.EnsureSuccessStatusCode();
-                    return new Response(await response.Content.ReadAsStringAsync());
+                    using (var httpResponse = await _client.SendAsync(httpRequest))
+                    {
+                        httpResponse.EnsureSuccessStatusCode();
+                        return new Response(await httpResponse.Content.ReadAsStringAsync());
+                    }
                 }
             }
         }

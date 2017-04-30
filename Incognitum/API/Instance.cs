@@ -9,7 +9,7 @@ namespace Incognitum.API
     public class Instance
     {
         [JsonProperty(PropertyName = "uri")]
-        public Uri Uri { get; set; }
+        public String UriString { get; set; }
 
         [JsonProperty(PropertyName = "title")]
         public String Title { get; set; }
@@ -19,5 +19,11 @@ namespace Incognitum.API
 
         [JsonProperty(PropertyName = "email")]
         public String EMail { get; set; }
+
+        public override string ToString()
+        {
+            return 
+                $"Mastodon Instance {Title} @ {UriString}{Environment.NewLine}{Description}{Environment.NewLine}Contact: {EMail}";
+        }
     }
 }
