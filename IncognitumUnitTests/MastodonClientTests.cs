@@ -36,7 +36,7 @@ namespace IncognitumUnitTests
         public void InstanceInformation()
         {
             var client = new MastodonClient("mastodon.social");
-            var result = client.InstanceInformation;
+            var result = client.GetInstanceInformationAsync().Result;
             Console.WriteLine(result);
         }
     }

@@ -37,16 +37,16 @@ namespace Incognitum
             return JsonConvert.DeserializeObject<T>(response.Content);
         }
 
-        public Instance InstanceInformation
+        public async Task<Instance> GetInstanceInformationAsync()
         {
-            get
-            {
-                return ApiCallAsync<Instance>(new Request(
+            return await 
+                ApiCallAsync<Instance>(new Request
+                (
                     Verb.GetPublic,
                     "api/v1/instance",
                     default(AuthToken),
-                    new Dictionary<string, string>())).Result;
-            }
+                    new Dictionary<string, string>()
+                ));
         }
     }
 }

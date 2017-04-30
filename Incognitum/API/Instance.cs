@@ -23,7 +23,7 @@ namespace Incognitum.API
         public override string ToString()
         {
             return 
-                $"Mastodon Instance {Title} @ {UriString}{Environment.NewLine}{Description}{Environment.NewLine}Contact: {EMail}";
+                $"Mastodon Instance {{uri=\"{UriString}\",title=\"{Title}\",description=\"{Description}\",email:\"{EMail}\"}}";
         }
     }
 }
