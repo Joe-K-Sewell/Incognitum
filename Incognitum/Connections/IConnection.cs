@@ -4,6 +4,7 @@ using System.Text;
 using System.Net.Http;
 
 using Incognitum.Authentication;
+using System.Threading.Tasks;
 
 namespace Incognitum.Connections
 {
@@ -12,7 +13,7 @@ namespace Incognitum.Connections
     /// </summary>
     public interface IConnection
     {
-        Response Send(Request request);
+        Task<Response> SendAsync(Request request);
     }
     
     /// <summary>
@@ -61,5 +62,10 @@ namespace Incognitum.Connections
     public sealed class Response
     {
         public String Content { get; private set; }
+
+        public Response(String content)
+        {
+            Content = content;
+        }
     }
 }

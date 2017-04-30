@@ -15,7 +15,7 @@ namespace IncognitumUnitTests
             Assert.ThrowsException<ArgumentNullException>(() => new HttpsConnection(null));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("")]
         [DataRow(" ")]
         public void ctor_WhitespaceHostnameThrowsException(String hostName)

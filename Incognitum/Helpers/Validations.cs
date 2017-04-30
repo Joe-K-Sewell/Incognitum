@@ -17,5 +17,13 @@ namespace Incognitum.Helpers
                 throw new ArgumentException("Argument cannot be whitespace", parameterName);
             }
         }
+
+        internal static void ParameterIsNotDefaultValue<T>(String parameterName, T parameterValue)
+        {
+            if (EqualityComparer<T>.Default.Equals(parameterValue, default(T)))
+            {
+                throw new ArgumentNullException(parameterName);
+            }
+        }
     }
 }

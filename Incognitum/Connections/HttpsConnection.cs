@@ -2,6 +2,7 @@
 using System.Net.Http;
 
 using Incognitum.Helpers;
+using System.Threading.Tasks;
 
 namespace Incognitum.Connections
 {
@@ -42,9 +43,16 @@ namespace Incognitum.Connections
         /// <summary> The URI pointing to the Mastodon instance. </summary>
         public Uri InstanceUri { get { return _client.BaseAddress; } }
 
-        public Response Send(Request request)
+        public async Task<Response> SendAsync(Request request)
         {
-            throw new NotImplementedException();
+            using (var content = new FormUrlEncodedContent(request.Arguments))
+            {
+                using (var response = await _client.PostAsync(request.Path, content))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return new Response(await response.Content.ReadAsStringAsync());
+                }
+            }
         }
     }
 }
