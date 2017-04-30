@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Incognitum;
 using Incognitum.Connections;
+using IncognitumUnitTests.TestHelpers;
+using System.Linq;
 
 namespace IncognitumUnitTests
 {
@@ -14,7 +16,7 @@ namespace IncognitumUnitTests
         [TestMethod]
         public void ctor_NullConnectionThrowsException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => new MastodonClient((IConnection) null));
+            Assert.ThrowsException<ArgumentNullException>(() => new MastodonClient((Connection) null));
         }
 
         [TestMethod]
@@ -32,12 +34,29 @@ namespace IncognitumUnitTests
         }
 
         [TestMethod]
-        [TestCategory("NotUnitTest")]
-        public void InstanceInformation()
+        public void InstanceInformation_Nominal()
         {
-            var client = new MastodonClient("mastodon.social");
-            var result = client.GetInstanceInformationAsync().Result;
-            Console.WriteLine(result);
+            var connection = new TestConnection(req => 
+            {
+                Assert.AreEqual(Verb.GetPublic, req.Verb);
+                Assert.AreEqual("/api/v1/instance", req.Path);
+                Assert.AreEqual(null, req.AuthToken);
+                Assert.AreEqual(0, req.Arguments.Count);
+
+                return new Response(@"{""uri"":""mastodon.social"",""title"":""Mastodon"",""description"":""The flagship Mastodon instance"",""email"":""eugen@zeonfederated.com"",""version"":""1.3.1""}");
+            });
+            var client = new MastodonClient(connection);
+            var instance = client.GetInstanceInformationAsync().Result;
+
+            Assert.AreEqual("mastodon.social", instance.UriString);
+            Assert.AreEqual(new Uri("https://mastodon.social/"), instance.Uri);
+            Assert.AreEqual("Mastodon", instance.Title);
+            Assert.AreEqual("The flagship Mastodon instance", instance.Description);
+            Assert.AreEqual("eugen@zeonfederated.com", instance.EMail);
+
+            var extraData = instance.NonSpecData.Single();
+            Assert.AreEqual("version", extraData.Key);
+            Assert.AreEqual("1.3.1", extraData.Value);
         }
     }
 }

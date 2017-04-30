@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
-
+using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace Incognitum.API
 {
@@ -10,6 +11,9 @@ namespace Incognitum.API
     {
         [JsonProperty(PropertyName = "uri")]
         public String UriString { get; set; }
+
+        [JsonIgnore]
+        public Uri Uri { get { return new UriBuilder("https", UriString).Uri; } }
 
         [JsonProperty(PropertyName = "title")]
         public String Title { get; set; }
@@ -20,6 +24,18 @@ namespace Incognitum.API
         [JsonProperty(PropertyName = "email")]
         public String EMail { get; set; }
 
+        [JsonExtensionData]
+        internal Dictionary<String, JToken> NonSpecDataRaw;
+
+        [JsonIgnore]
+        public Dictionary<String, String> NonSpecData
+        {
+            get
+            {
+                return NonSpecDataRaw.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+            }
+        }
+        
         public override string ToString()
         {
             return 

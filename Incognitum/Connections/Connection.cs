@@ -11,15 +11,15 @@ namespace Incognitum.Connections
     /// <summary>
     /// A connection to a particular Mastodon instance.
     /// </summary>
-    public interface IConnection
+    internal abstract class Connection
     {
-        Task<Response> SendAsync(Request request);
+        internal abstract Task<Response> SendAsync(Request request);
     }
     
     /// <summary>
     /// A request sent to a Mastodon instance.
     /// </summary>
-    public sealed class Request
+    internal sealed class Request
     {
         public Verb Verb { get; private set; }
         public String Path { get; private set; }
@@ -38,7 +38,7 @@ namespace Incognitum.Connections
     /// <summary>
     /// A kind of request that is sent to a Mastodon instance.
     /// </summary>
-    public sealed class Verb
+    internal sealed class Verb
     {
         public static readonly Verb GetPublic = new Verb(HttpMethod.Get, false);
         public static readonly Verb Get = new Verb(HttpMethod.Get, true);
@@ -54,12 +54,29 @@ namespace Incognitum.Connections
             HttpMethod = httpMethod;
             RequireAuthToken = requireAuthToken;
         }
+
+        public override int GetHashCode()
+        {
+            return 3 * HttpMethod.GetHashCode() + RequireAuthToken.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Verb);
+        }
+
+        public bool Equals(Verb other)
+        {
+            if (other == null) { return false; }
+            return this.HttpMethod.Equals(other.HttpMethod)
+                && this.RequireAuthToken.Equals(other.RequireAuthToken);
+        }
     }
 
     /// <summary>
     /// The response from a Mastodon instance to a <seealso cref="Request"/>.
     /// </summary>
-    public sealed class Response
+    internal sealed class Response
     {
         public String Content { get; private set; }
 

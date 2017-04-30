@@ -9,7 +9,7 @@ namespace Incognitum.Connections
     /// <summary>
     /// Represents a connection via HTTPS to a Mastodon instance.
     /// </summary>
-    public sealed class HttpsConnection : IConnection
+    internal sealed class HttpsConnection : Connection
     {
         private HttpClient _client;
 
@@ -43,12 +43,17 @@ namespace Incognitum.Connections
         /// <summary> The URI pointing to the Mastodon instance. </summary>
         public Uri InstanceUri { get { return _client.BaseAddress; } }
 
-        public async Task<Response> SendAsync(Request request)
+        internal override async Task<Response> SendAsync(Request request)
         {
             using (var content = new FormUrlEncodedContent(request.Arguments))
             {
                 using (var httpRequest = new HttpRequestMessage(request.Verb.HttpMethod, request.Path))
                 {
+                    httpRequest.Content = content;
+                    if (request.Verb.RequireAuthToken)
+                    {
+                        httpRequest.Headers.Add("Authorization", $"Bearer {request.AuthToken}");
+                    }
                     using (var httpResponse = await _client.SendAsync(httpRequest))
                     {
                         httpResponse.EnsureSuccessStatusCode();

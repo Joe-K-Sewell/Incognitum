@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Incognitum.Authentication
 {
-    public struct AuthToken
+    public class AuthToken
     {
         
     }
