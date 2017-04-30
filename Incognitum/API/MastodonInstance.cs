@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Incognitum.API
 {
-    public class Instance
+    public class MastodonInstance
     {
         [JsonProperty(PropertyName = "uri")]
         public String UriString { get; set; }

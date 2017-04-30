@@ -15,6 +15,10 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard1.4\IncognitumDocs.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="xunit.runner.console" Version="2.2.0" />

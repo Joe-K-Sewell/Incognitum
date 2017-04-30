@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Incognitum;
+using Incognitum.API;
 using Incognitum.Connections;
 using IncognitumUnitTests.TestHelpers;
 using System.Linq;
@@ -34,7 +34,7 @@ namespace IncognitumUnitTests
         }
 
         [TestMethod]
-        public void InstanceInformation_Nominal()
+        public void GetInstanceInformation_Nominal()
         {
             var connection = new TestConnection(req => 
             {

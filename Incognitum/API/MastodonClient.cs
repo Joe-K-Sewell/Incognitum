@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
 using Incognitum.Authentication;
-using Incognitum.API;
 using Incognitum.Connections;
 using Incognitum.Helpers;
-using System.Threading.Tasks;
 
-namespace Incognitum
+namespace Incognitum.API
 {
     /// <summary>
     /// Represents an interface to a particular Mastodon instance.
@@ -55,10 +53,10 @@ namespace Incognitum
         /// Gets the instance information.
         /// </summary>
         /// <returns>information about the connected instance</returns>
-        public async Task<Instance> GetInstanceInformationAsync()
+        public async Task<MastodonInstance> GetInstanceInformationAsync()
         {
             return await 
-                ApiCallAsync<Instance>(new Request
+                ApiCallAsync<MastodonInstance>(new Request
                 (
                     Verb.GetPublic,
                     "/api/v1/instance",
