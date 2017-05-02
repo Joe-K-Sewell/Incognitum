@@ -5,6 +5,8 @@ using System.Net.Http;
 
 using Incognitum.Authentication;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using System.Linq;
 
 namespace Incognitum.Connections
 {
@@ -79,10 +81,12 @@ namespace Incognitum.Connections
     internal sealed class Response
     {
         public String Content { get; private set; }
+        public IDictionary<String, String[]> Headers { get; private set; }
 
-        public Response(String content)
+        public Response(String content, IEnumerable<KeyValuePair<String, IEnumerable<String>>> headers)
         {
             Content = content;
+            Headers = headers.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToArray());
         }
     }
 }

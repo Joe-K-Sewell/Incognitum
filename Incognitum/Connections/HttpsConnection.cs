@@ -57,7 +57,7 @@ namespace Incognitum.Connections
                     using (var httpResponse = await _client.SendAsync(httpRequest))
                     {
                         httpResponse.EnsureSuccessStatusCode();
-                        return new Response(await httpResponse.Content.ReadAsStringAsync());
+                        return new Response(await httpResponse.Content.ReadAsStringAsync(), httpResponse.Headers);
                     }
                 }
             }

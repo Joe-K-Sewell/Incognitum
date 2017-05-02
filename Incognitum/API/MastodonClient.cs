@@ -16,6 +16,12 @@ namespace Incognitum.API
     /// </summary>
     public class MastodonClient
     {
+        private struct ApiResult<T>
+        {
+            internal T deserialized;
+            internal Response response;
+        }
+
         private readonly Connection _connection;
 
         /// <summary>
@@ -43,10 +49,20 @@ namespace Incognitum.API
         /// <typeparam name="T">the API type that is expected as a return value</typeparam>
         /// <param name="request">the request to make to the API</param>
         /// <returns>the deserialized API object</returns>
-        private async Task<T> ApiCallAsync<T>(Request request)
+        private async Task<ApiResult<T>> ApiCallAsync<T>(Request request)
         {
             var response = await _connection.SendAsync(request);
-            return JsonConvert.DeserializeObject<T>(response.Content);
+            return new ApiResult<T>()
+            {
+                deserialized = JsonConvert.DeserializeObject<T>(response.Content),
+                response = response
+            };
+        }
+
+        private async Task<MastodonPage<T>> ApiCallPageAsync<T>(Request request)
+        {
+            var response = await _connection.SendAsync(request);
+            return new MastodonPage<T>(response);
         }
 
         /// <summary>
@@ -55,13 +71,45 @@ namespace Incognitum.API
         /// <returns>information about the connected instance</returns>
         public async Task<MastodonInstance> GetInstanceInformationAsync()
         {
-            return await ApiCallAsync<MastodonInstance>(
+            var result = await ApiCallAsync<MastodonInstance>(
                 new Request
                 (
                     Verb.GetPublic,
                     "/api/v1/instance",
                     null,
                     new Dictionary<string, string>()
+                ));
+            return result.deserialized;
+        }
+
+        /// <summary>
+        /// Gets a page of the public timeline.
+        /// </summary>
+        /// <param name="localOnly">Optional. If true, only return statuses from the queried instance</param>
+        /// <param name="maxId">Optional. If provided, only return statuses with IDs not greater than this one.</param>
+        /// <param name="sinceId">Optional. If provided, only return statuses with IDs greater than this one.</param>
+        /// <param name="limit">Optional, defaults to 20. If provided, maximum number of statuses to get. Cannot specify greater than 40.</param>
+        /// <returns></returns>
+        public async Task<MastodonPage<MastodonStatus>> GetPublicTimelineAsync(
+            Boolean? localOnly = null, 
+            MastodonStatusId? maxId = null,
+            MastodonStatusId? sinceId = null,
+            UInt32? limit = null)
+        {
+            var parameters = new Dictionary<string, string>();
+
+            parameters.AddStringIfHasValue("local", localOnly);
+            parameters.AddStringIfHasValue("max_id", maxId);
+            parameters.AddStringIfHasValue("since_id", sinceId);
+            parameters.AddStringIfHasValue("limit", limit);
+            
+            return await ApiCallPageAsync<MastodonStatus>(
+                new Request
+                (
+                    Verb.GetPublic,
+                    "/api/v1/timelines/public",
+                    null,
+                    parameters
                 ));
         }
     }

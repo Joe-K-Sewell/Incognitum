@@ -43,7 +43,9 @@ namespace IncognitumUnitTests.API
                 Assert.AreEqual(null, req.AuthToken);
                 Assert.AreEqual(0, req.Arguments.Count);
 
-                return new Response(@"{""uri"":""mastodon.social"",""title"":""Mastodon"",""description"":""The flagship Mastodon instance"",""email"":""eugen@zeonfederated.com"",""version"":""1.3.1""}");
+                return new Response(
+                    @"{""uri"":""mastodon.social"",""title"":""Mastodon"",""description"":""The flagship Mastodon instance"",""email"":""eugen@zeonfederated.com"",""version"":""1.3.1""}",
+                    new TestHeaders());
             });
             var client = new MastodonClient(connection);
             var instance = client.GetInstanceInformationAsync().Result;
@@ -57,6 +59,13 @@ namespace IncognitumUnitTests.API
             var extraData = instance.NonSpecData.Single();
             Assert.AreEqual("version", extraData.Key);
             Assert.AreEqual("1.3.1", extraData.Value);
+        }
+
+        [TestMethod]
+        public void GetPublicTimelineAsync_Nominal()
+        {
+            var client = new MastodonClient("mastodon.social");
+            var timelinePage = client.GetPublicTimelineAsync().Result;
         }
     }
 }

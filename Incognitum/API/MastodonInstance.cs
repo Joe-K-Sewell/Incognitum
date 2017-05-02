@@ -18,7 +18,7 @@ namespace Incognitum.API
         /// </summary>
         /// <remarks><code>uri</code> in spec</remarks>
         [JsonProperty(PropertyName = "uri")]
-        public String UriString { get; set; }
+        public String UriString { get; internal set; }
 
         /// <summary>
         /// Complete URI of the instance.
@@ -31,21 +31,21 @@ namespace Incognitum.API
         /// </summary>
         /// <remarks><code>title</code> in spec</remarks>
         [JsonProperty(PropertyName = "title")]
-        public String Title { get; set; }
+        public String Title { get; internal set; }
 
         /// <summary>
         /// A description for the instance.
         /// </summary>
         /// <remarks><code>description</code> in spec</remarks>
         [JsonProperty(PropertyName = "description")]
-        public String Description { get; set; }
+        public String Description { get; internal set; }
 
         /// <summary>
         /// An email address which can be used to contact the instance administrator.
         /// </summary>
         /// <remarks><code>email</code> in spec</remarks>
         [JsonProperty(PropertyName = "email")]
-        public String Email { get; set; }
+        public String Email { get; internal set; }
 
         /// <summary>
         /// Additional keys deserialized by Json.NET.
@@ -66,6 +66,8 @@ namespace Incognitum.API
             }
         }
         
+        internal MastodonInstance() { }
+
         /// <summary>
         /// Returns a developer-friendly string representing this object.
         /// </summary>
